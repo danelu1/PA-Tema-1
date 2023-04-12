@@ -1,0 +1,74 @@
+Problema 1(Feribot)
+Mi s-a parut destul de dificila problema, iar pentru rezolvare am urmat sfatul unui coleg de grupa in a face cautare binara intre cel mai mare element din sir si suma tuturor elementelor.
+Pentru rezolvare am aplicat tehnica "Divide et impera" creeand o functie auxiliara "check" ce verifica daca exista maxim "k" subsecvente intr-un sir, cu proprietatea ca nicio subsecventa nu are suma mai mare decat parametrul "maxSubarraySum" din antetul functiei. M-am gandit la functia "check" astfel:
+	-> Initial verificam daca nu cumva primul element din sir este mai mare decat variabila primita ca parametru in antetul functiei, caz in care intoarcem "false". Alfel, executia se continua si ne luam un contor initializat cu 1(primul element din sir formeazasingur o subsecventa cu suma mai mica decat 1) si o suma curenta (initializata cu primul element din sir) in care retinem suma fiecarei subsecvente in parte pana cand este depasit parametrul "maxSubarraySum".
+	-> Incepem sa iteram prin sir si verificam de fiecare data daca am gasit un element mai mare decat "maxSubarraySum", caz in care intoarcem "false".
+	-> In cazul in care suma formata prin adunare
+	a primului element din sir la suma curenta depaseste parametrul functiei, resetam suma curenta la valoarea actuala din sir si incrementam contorul deoarece trecem la alta subsecventa.
+	-> In caz contrar doar continuam sa adunam valoarea actuala la suma curenta.
+	-> La final intoarcem rezultatul verificarii faptului ca "cnt" nu a depasit valoarea lui "k"(adica exista maxim "k" astfel de subsecvente).
+Functia ce rezolva problema, "solveTask", este implementata astfel:
+	-> Se face o cautare binara intre cel mai mare element din sir(maximul) si suma maxima ce poate fi obtinuta(adica suma elementelor din sir).
+	-> De fiecare data calculam mijlocul acestui interval si verificam daca exista maxim "k" subsecvente pentru care suma lor nu depaseste variabila "mid" calculata la fiecare pas (aplicarea functiei "check" adica), caz in care raspunsul este chiar "mid", iar cautarea continua pe jumatatea stanga a intervalului initial.
+	-> In caz contrar, n-am gasit inca raspunsul si continuam cautarea pe jumatatea dreapta a intervalului. Cautarea este oprita in momentul in care intervalul inital este redus la un singur punct care este si raspunsul.
+Complexitatea temporala a acestei solutii este O(n * log(sum)), unde "n" este numarul de elemente din sir, iar "sum" este suma tuturor elementelor din sir, iar aceasta se obtina datorita cautarii binare de la maxim la "sum"(care are complexitatea O(log(sum))) si a apelului functiei "check" in functia "solveTask", ce parcurge maxim tot sirul de elemente si minim doar primul element(deci consideram ca ar fi O(n)).
+	
+
+Problema 2(Nostory)
+Task-ul "1" cere in fapt gasirea sumei ce se poate obtine din cele mai mari "N" numere din 2 siruri ce au lungimea "N" fiecare. Pentru rezolvare am considerat un sir mai mare in care am bagat, pe rand, elementele din primul sir si dupa pe cele din sirul al doilea, dupa care am sortat sirul final si am adunat la rezultat(variabila "sum") ultimele "N" elemente, pentru a ma conforma cu ce am zis anterior.
+Complexitatea temporala este O(N * log(N) + 3 * N), adica in fapt, O(N * log(N)) (sortarea + 3 parcurgeri).
+Task-ul "2" este aceeasi problema ca task-ul "1", doar ca de data aceasta avem un numar limitat de mutari "k". Pentru rezolvare, am folosit doi vectori in care pastrez minimele, respectiv maximele de pe fiecare pozitie din sirurile noastre initiale. Sortam cei doi vectori si incercam sa facem cele "k" interschimbari, distingand 2 cazuri posibile:
+	 1) primele "k" elemente din sirul de maxime(cele mai mici) sunt mai mari decat ultimele "k" elemente din sirul de minime(cele mai mari), caz in care fortam oprirea interschimbarilor, deoarece maximele de la pozitia la care ne aflam se afla deja in sirul de maxime.
+	 2) nu se indeplineste prima conditie si ne ramane astfel sa atribuim valori pana fie se termina mutarile permise, fie e fortata oprirea "for"-ului in care lucram.
+La final se calculeaza suma si este intoarsa ca rezultat.
+Complexitatea temporala este maxim O(2 * n * log(n) + 2 * n + k)(2 sortari + 2 parcurgeri pentru intregul sir de maxime + o parcurgere pentru maxim "k" elemente din sirul de maxime), adica O(n * log(n)).
+Am folosit clasa "MyScanner" din scheletul oferit.
+
+
+Problema 3(Sushi)
+Pentru rezolvare am observat ca problema este chiar problema discreta a rucsacului facuta la laborator si la curs, asa ca am preluat secvente de cod din laborator puse la dispozitie de catre echipa de "PA" si le-am adaptat pe baza nevoilor problemei actuale.
+La task-ul "1" am folosit codul de la problema rucsacului, doar ca adaptat la problema mea:
+	-> "obiectele" cu profit si greutate sunt "platourile" cu pret si scor oferit de fiecare persoana.
+	-> "capacitatea maxima" este "suma maxima de bani" care poate fi platita in total(n * x).
+La task-ul "2" am pastrat ideea de la task-ul "1", doar ca de data aceasta am dublat numarul de platouri ce pot fi cumparate, avand in vedere ca sunt permise maxim 2 de fiecare tip. Am folosit vectorii "repeatingScores" si "repeatingPrices" obtinuti prin aplicarea functiei "repeat" asupra vectorilor initiali, pentru ca astfel pe ultimele "m" pozitii din vectorii rezultati se vor afla primele "m" elemente, care sunt identice, adica vom putea reface aceleasi verificari pentru toate obiectele din nou, incercand sa extragem maxim 2 platouri de fiecare tip.
+La task-ul "3" am observat, privind exemplul oferit in enunt, ca problema poate fi rezolvata prin acelasi procedeu ca task-ul anterior(adica dublarea vectorilor corespunzatori preturilor platourilor si scorurile oferite fiecaruia in parte), cu exceptia ca de data aceasta trebuiesc sortate platourile in functie de scoruri, descrescator. Cu asta se ocupa functia "rearrange" implementata mai sus, care intoarce o matrice cu preturile si scorurile sortate aferent. La final aplicam aceeasi dinamica, doar ca pentru primele "n" platouri disponibile.
+Functia "rearrange" primeste ca parametrii 2 vectori de numere intregi si un prag "k" si efectueaza urmatoarele operatii:
+	-> creeaza doi vectori prin aplicarea functiei "repeat" pe cei 2 vectori initiali.
+	-> adauga intr-un "ArrayList<ArrayList<Integer>>" fiecare pereche de forma "element din "a" <-> element din "b"(pentru a face asocierea scor<->pret) sub forma de "ArrayList<Integer>".
+	-> sorteaza lista rezultata descrescator dupa scor si crescator dupa pret.
+	-> stocheaza in 2 vectori de numere intregi doar primele "k" elemente rezultate din lista si intoarce o matrice formata din acesti 2 vectori.
+Complexitatea temporala, pe rand, este:
+	-> O(m * n * x), din cauza parcurgerii tabloului bidimensional cu solutii.
+	-> O(2 * m * n * x), din cauza dublarii vectorilor cu preturi si scoruri.
+	-> O(m * log(m) + n ^ 2 * x), din cauza sortarii din functia "rearrange" si a parcurgerii solutiilor din matrice.
+Am folosit clasa "MyScanner" din scheletul oferit.
+
+
+Problema 4(Semnale)
+Pentru rezolvarea ambelor task-uri ale acestei probleme am folosit tehnica programarii dinamice.
+La task-ul "1" am considerat cazurile in care "x" este fixat, iar y poate fi pe rand 0, 1, 2, 3... . In urma unor calcule(destul de simple) am observat ca se obtine de fiecare data rezultatul "combinari de "x + 1" luate cate "y"", dar totusi am observat ca solutia asta nu era cea mai buna si de aceea am adaptat rezolvarea cu combinari la rezolvarea de la task-ul 2(prima oara am facut cu combinari, dar dupa ce am rezolvat task-ul 2 am zis sa schimb si sa abordez o aceeasi implementare). Ideea nu o mai detaliez deoarece este explicata mai jos.
+Complexitatea temporala este aceeasi ca pentru task-ul urmator, adica O(x * y + y ^ 2).
+La task-ul "2" am folosit ca tehnica programarea dinamica. Am considerat o matrice de dimensiuni "y + 1" si "x + y + 1"(pentru a putea incepe iteratiile de la 1) in care am construit toate solutiile. Folosesc in fapt matricea pentru a putea raspunde de fiecare data la intrebarea: "In cate moduri pot aseza "i" biti de 1 pe "k" pozitii posibile, astfel incat sa nu existe mai mult de 2 biti consecutivi de "1"?", unde "i" merge de la 1 la "y" si "k" merge de la 1 la "x + y". Pentru prima linie e evident ca numarul de moduri in care poate fi asezat un singur bit pe "k" pozitii(sa zicem) este combinari de k luate cate 1, adica "k". La fel si in cazul celei de-a 2-a linii, doar ca vom avea pentru fiecare caz combinari de "k" luate cate 2, deoarece avem 2 biti de "1" de data aceasta. In rest punem 0 in matrice. Dupa cateva cazuri am observat ca, de exemplu, pentru un numar de 3 biti de 1 pe care ii pot pune pe 8 pozitii, astfel incat nu sunt mai mult de 2 consecutivi de "1", este acelasi cu:
+	 -> cazurile in care vreau sa pun 3 biti pe 7 pozitii + cazurile in care vreau sa pun 2 biti pe 6 pozitii + cazurile pentru 1 bit pe 5 pozitii(adica, in cazul nostru, dp[i][j] = dp[i][j - 1] + dp[i - 1][j - 2] + dp[i - 2][j - 3]).
+Am observat asta punand mai intai in fata cazurile cu "11" pe primele 2 pozitii, dupa cazurile cu "10" pe primele 2 pozitii, iar intr-un final cazurile cu "01" pe prima pozitie.
+Complexitatea temporala este O((x + y) * y), adica O(y ^ 2 + x * y)(din cauza parcurgerii matricei cu solutii).
+Am folosit clasa "MyScanner" din scheletul oferit.
+
+
+Problema 5(Badgpt)
+Pentru rezolvarea acestei probleme am folosit codul pus la dispozitie de echipa de "PA" pentru exponentierea unei matrici in timp logaritmic, doar ca putin modificat pentru a putea obtine rezultatele dorite.
+Functiile implementate pentru rezolvarea problemei au fost:
+	-> "multiply", functie folosita pentru inmultirea a 2 matrici de 2x2(toate formulele cu "mod" sunt luate din lab-ul de PA). Functia in fapt primeste ca argumente 2 matrici in care gasim elementele celor 2 matrici ce pot fi de nxn de exemplu, dar noi avem nevoie strict de matricea formata din intersectia primelor 2 linii cu primele 2 coloane;
+	-> "matrixNthPower", functie ce realizeaza ridicarea la putere a unei matrici in timp logaritmic. Preluata din lab-ul 4 de PA si modificata putin.
+	-> "fibb", functie ce aplica functia anterioara pe matricea "[[1, 1], [1, 0]]" si intoarce doar primul element din matrice, acesta reprezentand al "n"-lea termen din sirul lui Fibbonaci(in mod normal trebuia ales al doilea termen, dar sirul nostru, in cadrul problemei, este decalat cu un termen). Per total metoda de exponentiere ofera o complexitate logaritmica ce optimizeaza obtinerea termenilor din sirul lui Fibbonaci cautat.
+	-> "transform", functie ce preia string-ul primit ca input de problema si extrage din acesta strict numerele din dreptul literelor 'n' si 'u' si le adauga sub forma de "String" intr-o lista pe care o vom intoarce. Functia consta intr-un "while" in care se verifica daca litera curenta este 'u' sau 'n', caz in care se adauga in lista numarul format(sub forma de string) prin adaugarea fiecarei cifre de dupa caracterul respectiv. In caz contrar situatiei initiale, incrementam contorul "i" pe care l-am ales initial si continuam pana ajungem la finalul string-ului.
+	-> "solve", Functie ce rezolva problema propriu-zisa. Se observa ca pentru un sir ce nu contine deloc literele 'u' si 'n', rezultatul este 1, deoarece nu putem modifica sirul initial de caractere pentru a obtine orice alta combinatie. In caz contrar, am analizat cazul in care avem 'n' in sirul de caractere,  nu si 'u'(si cazul cu 'u' este identic). In acest caz, dupa un numar mic de pasi, am observat ca posibilitatile generate se comporta precum sirul lui Fibbonaci(de aici si functiile de mai sus). Am considerat in urmatoarea instanta un sir de caractere ce continea atat 'n' cat si 'u', in orice mod asezate in interiorul acestuia, si am observat ca daca lasam fixate pe rand, incepand din oricare parte a sirului, fiecare grupare de 'n', respectiv 'u', si o analizam pe ultima, avand in vedere ca celelalte sunt fixate, ultima o sa genereze fibb(lungimea_proprie_a_secventei_ramase_libere) posibile rezultate dupa "decompresie". Cu aceasta observatie si prin "deblocarea"secventei anterioare acesteia, observam ca de aceasta data se vor genera rezultate pentru modificari in ambele siruri deblocate, adica fibb(lungime_secventa_curenta) * fib(lungime_secventa_anterioara), care este in fapt produsul dintre numarul elementelor generate de prima secventa si numarul elementelor generate de a doua secventa(regula produsului). Astfel am obtinut toate posibilitatile finale ca fiind produsul unor termeni din sirul lui Fibbonaci, termenii acestia fiind fibb(lungime_secventa), unde lungimea respectiva se extrage pentru fiecare 'n' si 'u' din sirul comprimat.
+Complexitatea temporala este O(p * log(k) + n), unde:
+	-> "p" reprezinta numarul de elemente al listei formate prin aplicarea functiei "transform".
+	-> "k" reprezinta al "k-lea" numar fibonacci.
+	-> "n" reprezinta lungimea string-ului primit de problema.
+Aceasta complexitate se obtine din inmultirea tuturor numerelor fibonacci(obtinute prin exponentierea a carei complexitate este O(log(n))) pana in dimensiunea listei obtinute prin aplicarea functiei "transform"(care are o complexitate de O(n)).
+Am folosit clasa "MyScanner" din scheletul oferit.
+
+
+Ca observatii adiacente, am mentionat mai sus faptul ca la "Problema 1(Feribot)" am fost sfatuit de un coleg pentru a o rezolva folosind cautare binara intre maximul din sir si suma elementelor din sir, la "Problema 3(Sushi)" am folosit codul pus la dispozitie de echipa de "PA", ceea ce era permis, iar la ultima problema am implementat functia cu regex-ul respectiv cu ajutorul internetului(nu am copiat-o, doar am cautat o modalitate de procesare a input-ului). O ultima observatie ar fi ca am mai sfatuit cativa colegi in a rezolva o problema, doar conceptual, idei, lucru pe care sper ca-l vor mentiona si ei in README :).
