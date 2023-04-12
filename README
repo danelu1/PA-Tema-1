@@ -1,5 +1,4 @@
 Problema 1(Feribot)
-Mi s-a parut destul de dificila problema, iar pentru rezolvare am urmat sfatul unui coleg de grupa in a face cautare binara intre cel mai mare element din sir si suma tuturor elementelor.
 Pentru rezolvare am aplicat tehnica "Divide et impera" creeand o functie auxiliara "check" ce verifica daca exista maxim "k" subsecvente intr-un sir, cu proprietatea ca nicio subsecventa nu are suma mai mare decat parametrul "maxSubarraySum" din antetul functiei. M-am gandit la functia "check" astfel:
 	-> Initial verificam daca nu cumva primul element din sir este mai mare decat variabila primita ca parametru in antetul functiei, caz in care intoarcem "false". Alfel, executia se continua si ne luam un contor initializat cu 1(primul element din sir formeazasingur o subsecventa cu suma mai mica decat 1) si o suma curenta (initializata cu primul element din sir) in care retinem suma fiecarei subsecvente in parte pana cand este depasit parametrul "maxSubarraySum".
 	-> Incepem sa iteram prin sir si verificam de fiecare data daca am gasit un element mai mare decat "maxSubarraySum", caz in care intoarcem "false".
@@ -69,6 +68,3 @@ Complexitatea temporala este O(p * log(k) + n), unde:
 	-> "n" reprezinta lungimea string-ului primit de problema.
 Aceasta complexitate se obtine din inmultirea tuturor numerelor fibonacci(obtinute prin exponentierea a carei complexitate este O(log(n))) pana in dimensiunea listei obtinute prin aplicarea functiei "transform"(care are o complexitate de O(n)).
 Am folosit clasa "MyScanner" din scheletul oferit.
-
-
-Ca observatii adiacente, am mentionat mai sus faptul ca la "Problema 1(Feribot)" am fost sfatuit de un coleg pentru a o rezolva folosind cautare binara intre maximul din sir si suma elementelor din sir, la "Problema 3(Sushi)" am folosit codul pus la dispozitie de echipa de "PA", ceea ce era permis, iar la ultima problema am implementat functia cu regex-ul respectiv cu ajutorul internetului(nu am copiat-o, doar am cautat o modalitate de procesare a input-ului). O ultima observatie ar fi ca am mai sfatuit cativa colegi in a rezolva o problema, doar conceptual, idei, lucru pe care sper ca-l vor mentiona si ei in README :).
